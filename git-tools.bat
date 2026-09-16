@@ -16,21 +16,21 @@ echo  ====================================================
 echo            Git Toolbox - FlashTime
 echo  ====================================================
 echo.
-echo   [1] 查看状态          (git status)
-echo   [2] 查看改动          (git diff)
-echo   [3] 查看日志          (git log)
-echo   [4] 提交并推送        (add + commit + push)
-echo   [5] 拉取更新          (git pull)
-echo   [6] 查看忽略文件      (gitignore)
-echo   [7] 撤销上次提交      (reset soft)
-echo   [8] 新建分支          (git branch)
-echo   [9] 切换分支          (git checkout)
-echo   [R] 发布 GitHub Release
-echo   [0] 退出
+echo   [1] Show status          (git status)
+echo   [2] Show diff            (git diff)
+echo   [3] Show log             (git log)
+echo   [4] Commit and push      (add + commit + push)
+echo   [5] Pull updates         (git pull)
+echo   [6] Show ignored files   (check gitignore)
+echo   [7] Undo last commit     (reset soft)
+echo   [8] Create branch        (git branch)
+echo   [9] Switch branch        (git checkout)
+echo   [R] Build and release to GitHub Releases
+echo   [0] Exit
 echo.
 echo  ====================================================
 echo.
-set /p choice="请选择 [0-9/R]: "
+set /p choice="Please select [0-9/R]: "
 
 if "%choice%"=="1" goto status
 if "%choice%"=="2" goto diff
@@ -43,14 +43,14 @@ if "%choice%"=="8" goto branch
 if "%choice%"=="9" goto checkout
 if /i "%choice%"=="R" goto release
 if "%choice%"=="0" exit
-echo 无效选项
+echo Invalid option
 timeout /t 2 >nul
 goto menu
 
 :status
 cls
 echo.
-echo  --- 当前状态 ---
+echo  --- Current status ---
 echo.
 cd /d "%WORK_DIR%"
 %GIT% status
@@ -61,12 +61,12 @@ goto menu
 :diff
 cls
 echo.
-echo  --- 未暂存改动 ---
+echo  --- Unstaged changes ---
 echo.
 cd /d "%WORK_DIR%"
 %GIT% diff
 echo.
-echo  --- 已暂存改动 ---
+echo  --- Staged changes ---
 echo.
 %GIT% diff --cached
 echo.
@@ -76,7 +76,7 @@ goto menu
 :log
 cls
 echo.
-echo  --- 最近 20 条提交 ---
+echo  --- Last 20 commits ---
 echo.
 cd /d "%WORK_DIR%"
 %GIT% log --oneline --graph -20
@@ -87,22 +87,22 @@ goto menu
 :push
 cls
 echo.
-echo  --- 提交并推送 ---
+echo  --- Commit and push ---
 echo.
 cd /d "%WORK_DIR%"
 
-echo 待提交文件:
+echo Files to commit:
 %GIT% status --short
 echo.
 
-set /p msg="提交说明 (回车使用默认): "
+set /p msg="Commit message (Enter for default): "
 if "%msg%"=="" set msg=update %date% %time%
 
 %GIT% add .
 %GIT% commit -m "%msg%"
 %GIT% push
 echo.
-echo  --- 完成 ---
+echo  --- Done ---
 echo.
 pause
 goto menu
@@ -110,7 +110,7 @@ goto menu
 :pull
 cls
 echo.
-echo  --- 拉取远程更新 ---
+echo  --- Pull remote updates ---
 echo.
 cd /d "%WORK_DIR%"
 %GIT% pull
@@ -121,7 +121,7 @@ goto menu
 :ignored
 cls
 echo.
-echo  --- 被 .gitignore 忽略的文件 (前 30 条) ---
+echo  --- Files ignored by .gitignore (first 30) ---
 echo.
 cd /d "%WORK_DIR%"
 %GIT% ls-files --others --ignored --exclude-standard
@@ -132,18 +132,18 @@ goto menu
 :undo
 cls
 echo.
-echo  --- 撤销上次提交 (保留改动到暂存区) ---
+echo  --- Undo last commit (keep changes staged) ---
 echo.
-echo 上次提交:
+echo Last commit:
 cd /d "%WORK_DIR%"
 %GIT% log --oneline -1
 echo.
-set /p confirm="确认撤销? (y/N): "
+set /p confirm="Undo? (y/N): "
 if /i "%confirm%"=="y" (
     %GIT% reset --soft HEAD~1
-    echo 已撤销，改动保留在暂存区
+    echo Undone, changes are kept in the staging area
 ) else (
-    echo 已取消
+    echo Canceled
 )
 echo.
 pause
@@ -152,19 +152,19 @@ goto menu
 :branch
 cls
 echo.
-echo  --- 分支管理 ---
+echo  --- Branch management ---
 echo.
-echo 当前分支:
+echo Current branch:
 cd /d "%WORK_DIR%"
 %GIT% branch --show-current
 echo.
-echo 所有分支:
+echo All branches:
 %GIT% branch
 echo.
-set /p newbranch="新分支名 (回车返回): "
+set /p newbranch="New branch name (Enter to return): "
 if "%newbranch%"=="" goto menu
 %GIT% checkout -b "%newbranch%"
-echo 已创建并切换到: %newbranch%
+echo Created and switched to: %newbranch%
 echo.
 pause
 goto menu
@@ -172,16 +172,16 @@ goto menu
 :checkout
 cls
 echo.
-echo  --- 切换分支 ---
+echo  --- Switch branch ---
 echo.
-echo 当前分支:
+echo Current branch:
 cd /d "%WORK_DIR%"
 %GIT% branch --show-current
 echo.
-echo 所有分支:
+echo All branches:
 %GIT% branch
 echo.
-set /p target="分支名 (回车返回菜单): "
+set /p target="Branch name (Enter to return): "
 if "%target%"=="" goto menu
 %GIT% checkout "%target%"
 echo.
@@ -192,41 +192,41 @@ goto menu
 cls
 echo.
 echo  ====================================================
-echo      发布到 GitHub Releases
+echo     Build and publish to GitHub Releases
 echo  ====================================================
 echo.
 
 cd /d "%WORK_DIR%"
 
-REM --- 从 Git Credential Manager 获取 token ---
-set GH_TOKEN=
+REM --- Get token from Git Credential Manager ---
+set GHTOKEN=
 echo protocol=https> "%TEMP%\gcm_input.txt"
 echo host=github.com>> "%TEMP%\gcm_input.txt"
 echo.>> "%TEMP%\gcm_input.txt"
 for /f "tokens=1,* delims==" %%a in ('type "%TEMP%\gcm_input.txt" ^| %GIT% credential fill') do (
-    if "%%a"=="password" set "GH_TOKEN=%%b"
+    if "%%a"=="password" set "GHTOKEN=%%b"
 )
 del /f "%TEMP%\gcm_input.txt" 2>nul
 
-if "%GH_TOKEN%"=="" (
-    echo  [失败] 无法从 Git Credential Manager 获取凭据
-    echo  请先执行一次 "git push" 缓存凭据
+if "%GHTOKEN%"=="" (
+    echo  [FAILED] Could not get credentials from Git Credential Manager
+    echo  Please run "git push" once first to cache credentials
     pause
     goto menu
 )
-echo  [OK] 已获取凭据
+echo  [OK] Got credentials from Git Credential Manager
 
-REM --- 读取版本号
+REM --- Read version number ---
 for /f "tokens=2 delims=:, " %%a in ('findstr /c:"\"version\"" "package.json"') do (
     set "VER=%%~a"
 )
 echo.
-echo  当前版本: %VER%
+echo  Current version: %VER%
 echo.
-set /p newver="新版本号 (回车使用 %VER%): "
+set /p newver="New version (Enter to use %VER%): "
 if not "%newver%"=="" set VER=%newver%
 
-REM --- 自动查找最新便携包
+REM --- Find latest portable zip ---
 set "ZIP_PATH="
 for /f "delims=" %%f in ('dir /b /a-d /o-d flashtime-portable-*.zip 2^>nul') do (
     if not defined ZIP_PATH set "ZIP_PATH=%WORK_DIR%%%f"
@@ -235,88 +235,88 @@ if not defined ZIP_PATH for /f "delims=" %%f in ('dir /b /a-d /o-d *.zip 2^>nul'
     if not defined ZIP_PATH set "ZIP_PATH=%WORK_DIR%%%f"
 )
 if "%ZIP_PATH%"=="" (
-    echo  [失败] 未找到 flashtime-portable-*.zip，请先运行 build-portable.bat
+    echo  [FAILED] No flashtime-portable-*.zip found, run build-portable.bat first
     pause
     goto menu
 )
+for %%F in ("%ZIP_PATH%") do set "ZIP_NAME=%%~nxF"
 
 echo.
-echo 将发布: %ZIP_PATH%
+echo  Will release: %ZIP_PATH%
 echo.
-set /p go="开始? (y/N): "
+set /p go="Start? (y/N): "
 if /i not "%go%"=="y" (
-    echo 已取消
+    echo Canceled
     pause
     goto menu
 )
 
-REM --- 创建 Release
+REM --- Create Release ---
 echo.
-echo  [1/2] 创建 GitHub Release v%VER%...
+echo  [1/2] Creating GitHub Release v%VER%...
 
 set "API_URL=https://api.github.com/repos/%GH_USER%/%GH_REPO%/releases"
 set "TAG=v%VER%"
-for %%F in ("%ZIP_PATH%") do set "ZIP_NAME=%%~nxF"
 
 %curl% -s -o "%TEMP%\release_resp.json" -w "%%{http_code}" ^
   -X POST "%API_URL%" ^
-  -H "Authorization: token %GH_TOKEN%" ^
+  -H "Authorization: token %GHTOKEN%" ^
   -H "Accept: application/vnd.github.v3+json" ^
   -d "{\"tag_name\":\"%TAG%\",\"name\":\"FlashTime %VER%\",\"body\":\"FlashTime %VER% Portable\",\"draft\":false,\"prerelease\":false}" > "%TEMP%\release_http_code.txt"
 
 set /p HTTP_CODE=<"%TEMP%\release_http_code.txt"
 
 if "%HTTP_CODE%"=="201" (
-    echo  [OK] Release 创建成功
+    echo  [OK] Release created successfully
 ) else (
-    echo  [WARN] HTTP %HTTP_CODE% - Release 可能已存在
+    echo  [WARN] HTTP %HTTP_CODE% - Release may already exist
 )
 
-REM --- 获取 upload_url
+REM --- Get upload_url ---
 for /f "tokens=*" %%u in ('powershell -NoProfile -Command "(Get-Content '%TEMP%\release_resp.json' | ConvertFrom-Json).upload_url"') do set "UPLOAD_URL=%%u"
 
 if "%UPLOAD_URL%"=="" (
-    echo  [失败] 无法获取上传地址
-    echo  提示: 检查 Release 是否已在 GitHub 上存在
-    set GH_TOKEN=
+    echo  [FAILED] Could not get upload URL
+    echo  Hint: Check if the release already exists on GitHub
+    set GHTOKEN=
     pause
     goto menu
 )
 
-REM 去掉 {?name,label} 模板部分
+REM Strip the {?name,label} template part
 for /f "tokens=1 delims={?" %%p in ("%UPLOAD_URL%") do set "UPLOAD_URL=%%p"
 
-echo  [OK] 已获取上传地址
+echo  [OK] Got upload URL
 
-REM --- 上传 zip
+REM --- Upload zip ---
 echo.
-echo [2/2] 上传 %ZIP_NAME% ...
+echo  [2/2] Uploading %ZIP_NAME% ...
 
 %curl% -s -o "%TEMP%\upload_resp.json" -w "%%{http_code}" ^
   -X POST "%UPLOAD_URL%?name=%ZIP_NAME%" ^
-  -H "Authorization: token %GH_TOKEN%" ^
+  -H "Authorization: token %GHTOKEN%" ^
   -H "Content-Type: application/zip" ^
   --data-binary "@%ZIP_PATH%" > "%TEMP%\upload_code.txt"
 
 set /p UPLOAD_CODE=<"%TEMP%\upload_code.txt"
 
 if "%UPLOAD_CODE%"=="201" (
-    echo  [OK] 上传成功!
+    echo  [OK] Upload successful!
 ) else (
-    echo  [WARN] HTTP %UPLOAD_CODE% - 请检查上传结果
+    echo  [WARN] HTTP %UPLOAD_CODE% - Check the upload result
 )
 
-REM 清理 token
-set GH_TOKEN=
+REM Clear token from memory
+set GHTOKEN=
 
 echo.
 echo  ====================================================
-echo   完成!
+echo   Done!
 echo   https://github.com/%GH_USER%/%GH_REPO%/releases/tag/%TAG%
 echo  ====================================================
 echo.
 
-REM 清理临时文件
+REM Clean up temp files
 del /f "%TEMP%\release_resp.json" 2>nul
 del /f "%TEMP%\release_http_code.txt" 2>nul
 del /f "%TEMP%\upload_resp.json" 2>nul
