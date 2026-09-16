@@ -1,0 +1,100 @@
+/* =========================================================
+   闪时工具箱 FlashTime - 全局样式
+   Fluent Design 风格：浅色主题 + 亚克力模糊 + 大圆角
+   ========================================================= */
+
+:root {
+  color-scheme: light;
+
+  /* 主色：Win11 蓝 */
+  --ft-accent: #2b7cd3;
+
+  /* 亚克力层（shell）：半透明白 + 细腻模糊 */
+  --ft-shell-bg: rgba(250, 251, 253, 0.78);
+  --ft-shell-border: rgba(15, 30, 60, 0.08);
+
+  /* 三层表面（卡片/区块深度） */
+  --ft-surface-1: rgba(255, 255, 255, 0.65);   /* 最深的输入框底 */
+  --ft-surface-2: rgba(245, 247, 251, 0.65);   /* 列表/卡片 */
+  --ft-surface-3: rgba(222, 230, 242, 0.45);   /* hover / 分隔 */
+
+  /* 边框 */
+  --ft-border: rgba(15, 30, 60, 0.12);
+  --ft-border-soft: rgba(15, 30, 60, 0.06);
+
+  /* 文本三级 */
+  --ft-text-1: #1f2937;   /* 主文本 */
+  --ft-text-2: #4b5a6b;   /* 次要 */
+  --ft-text-3: #8a98a8;   /* 弱化 */
+
+  /* 滚动条 */
+  --ft-scrollbar: rgba(15, 30, 60, 0.15);
+}
+
+/* 暗色主题预留（Win11 系统暗色时自动跟随） */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --ft-shell-bg: rgba(32, 36, 44, 0.78);
+    --ft-shell-border: rgba(255, 255, 255, 0.06);
+    --ft-surface-1: rgba(40, 45, 55, 0.65);
+    --ft-surface-2: rgba(48, 54, 66, 0.65);
+    --ft-surface-3: rgba(70, 80, 98, 0.4);
+    --ft-border: rgba(255, 255, 255, 0.08);
+    --ft-border-soft: rgba(255, 255, 255, 0.04);
+    --ft-text-1: #eef2f7;
+    --ft-text-2: #b7c2d1;
+    --ft-text-3: #7f8b9c;
+    --ft-scrollbar: rgba(255, 255, 255, 0.15);
+    --ft-accent: #4c9eff;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Segoe UI Variable", "Segoe UI", system-ui, -apple-system,
+    "Microsoft YaHei", "微软雅黑", sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  background: transparent;   /* 让 Tauri 透明窗口生效 */
+  color: var(--ft-text-1);
+}
+
+/* 全局抗锯齿 */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 输入、选择统一底色 */
+input, select, textarea, button {
+  font-family: inherit;
+}
+
+/* 去掉 number 输入框的原生上下箭头（可选，保留） */
+/* input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; } */
+
+/* 全局选中色 */
+::selection {
+  background: var(--ft-accent);
+  color: #fff;
+}
+
+/* 自定义标题栏拖拽区域提示（经验：整个 titlebar 已在组件中绑定 drag） */
+[data-tauri-drag-region] {
+  -webkit-user-select: none;
+  user-select: none;
+}

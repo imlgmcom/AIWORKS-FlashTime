@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "闪时工具箱",
+  "version": "0.1.0",
+  "identifier": "com.mou.flashtime",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://127.0.0.1:5180",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "label": "main",
+        "title": "闪时工具箱",
+        "width": 380,
+        "height": 600,
+        "minWidth": 360,
+        "minHeight": 520,
+        "resizable": true,
+        "decorations": false,
+        "transparent": true,
+        "center": false,
+        "focus": true,
+        "shadow": true,
+        "visible": false,
+        "url": "/"
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "category": "Productivity",
+    "shortDescription": "系统托盘常驻的效率工具箱",
+    "longDescription": "闪时工具箱 FlashTime：正计时、倒计时、定时任务、提醒计划、TODO 待办。",
+    "copyright": "© 2026 FlashTime",
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
