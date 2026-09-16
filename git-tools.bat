@@ -226,16 +226,19 @@ echo.
 set /p newver="New version (Enter to use %VER%): "
 if not "%newver%"=="" set VER=%newver%
 
-REM --- Find latest portable zip ---
+REM --- Find latest portable zip in release folder ---
 set "ZIP_PATH="
-for /f "delims=" %%f in ('dir /b /a-d /o-d flashtime-portable-*.zip 2^>nul') do (
-    if not defined ZIP_PATH set "ZIP_PATH=%WORK_DIR%%%f"
+for /f "delims=" %%f in ('dir /b /a-d /o-d "%WORK_DIR%release\flashtime-portable-*.zip" 2^>nul') do (
+    if not defined ZIP_PATH set "ZIP_PATH=%WORK_DIR%release\%%f"
 )
-if not defined ZIP_PATH for /f "delims=" %%f in ('dir /b /a-d /o-d *.zip 2^>nul') do (
+if not defined ZIP_PATH for /f "delims=" %%f in ('dir /b /a-d /o-d "%WORK_DIR%release\*.zip" 2^>nul') do (
+    if not defined ZIP_PATH set "ZIP_PATH=%WORK_DIR%release\%%f"
+)
+if not defined ZIP_PATH for /f "delims=" %%f in ('dir /b /a-d /o-d "%WORK_DIR%flashtime-portable-*.zip" 2^>nul') do (
     if not defined ZIP_PATH set "ZIP_PATH=%WORK_DIR%%%f"
 )
 if "%ZIP_PATH%"=="" (
-    echo  [FAILED] No flashtime-portable-*.zip found, run build-portable.bat first
+    echo  [FAILED] No portable zip found in release\, run build-portable.bat first
     pause
     goto menu
 )

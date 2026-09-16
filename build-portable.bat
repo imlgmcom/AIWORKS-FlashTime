@@ -5,7 +5,7 @@ setlocal
 REM ============================================================
 REM  FlashTime Portable Build Script
 REM  Usage: Double-click build-portable.bat
-REM  Output: portable zip in project root
+REM  Output: portable zip in release folder
 REM ============================================================
 
 set "ROOT=%~dp0"
@@ -117,7 +117,7 @@ if %errorlevel% neq 0 (
 
 echo.
 echo ============================================================
-echo   Done! See portable zip in project root.
+echo   Done! See portable zip in release folder.
 echo ============================================================
 
 pause

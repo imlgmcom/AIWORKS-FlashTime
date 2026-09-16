@@ -12,7 +12,9 @@ $version = (Get-Content -Raw (Join-Path $Root "src-tauri\tauri.conf.json") | Con
 $exeName = [char]0x95EA + [char]0x65F6 + [char]0x5DE5 + [char]0x5177 + [char]0x7BB1 + ".exe"
 $zipName = [char]0x95EA + [char]0x65F6 + [char]0x5DE5 + [char]0x5177 + [char]0x7BB1 + "-portable-v" + $version + ".zip"
 
-$zipPath = Join-Path $Root $zipName
+$releaseDir = Join-Path $Root "release"
+if (-not (Test-Path $releaseDir)) { New-Item -ItemType Directory -Path $releaseDir | Out-Null }
+$zipPath = Join-Path $releaseDir $zipName
 $tmpDir = Join-Path $Root "_portable_tmp"
 
 Write-Host "[3/4] Creating portable package..."
