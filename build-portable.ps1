@@ -7,7 +7,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$version = "0.1.0"
+$version = (Get-Content -Raw (Join-Path $Root "src-tauri\tauri.conf.json") | ConvertFrom-Json).version
 # Build Chinese filename via char codes to avoid encoding issues
 $exeName = [char]0x95EA + [char]0x65F6 + [char]0x5DE5 + [char]0x5177 + [char]0x7BB1 + ".exe"
 $zipName = [char]0x95EA + [char]0x65F6 + [char]0x5DE5 + [char]0x5177 + [char]0x7BB1 + "-portable-v" + $version + ".zip"

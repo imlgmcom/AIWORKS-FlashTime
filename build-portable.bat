@@ -18,8 +18,15 @@ echo   FlashTime Build Script
 echo ============================================================
 echo.
 
-REM ---- [1/6] Check Rust toolchain ----
-echo [1/6] Checking Rust...
+REM ---- [1/7] Set version to current date ----
+echo [1/7] Setting version...
+set "VER="
+for /f "tokens=*" %%v in ('powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%\set-version.ps1"') do set "VER=%%v"
+echo   Version: %VER%
+echo.
+
+REM ---- [2/7] Check Rust toolchain ----
+echo [2/7] Checking Rust...
 where rustc >nul 2>&1
 if %errorlevel% neq 0 (
     echo   [MISSING] rustc not found
@@ -40,8 +47,8 @@ for /f "tokens=*" %%v in ('rustc --version') do echo   %%v
 for /f "tokens=*" %%v in ('cargo --version') do echo   %%v
 echo.
 
-REM ---- [2/6] Check Node.js ----
-echo [2/6] Checking Node.js...
+REM ---- [3/7] Check Node.js ----
+echo [3/7] Checking Node.js...
 where node >nul 2>&1
 if %errorlevel% neq 0 (
     echo   [MISSING] node not found
@@ -62,8 +69,8 @@ for /f "tokens=*" %%v in ('node --version') do echo   node %%v
 for /f "tokens=*" %%v in ('npm --version') do echo   npm  %%v
 echo.
 
-REM ---- [3/6] Check node_modules ----
-echo [3/6] Checking node_modules...
+REM ---- [4/7] Check node_modules ----
+echo [4/7] Checking node_modules...
 if not exist "%ROOT%\node_modules" (
     echo   node_modules not found, running npm install...
     call npm install
@@ -78,8 +85,8 @@ if not exist "%ROOT%\node_modules" (
 )
 echo.
 
-REM ---- [4/6] Build Release ----
-echo [4/6] Building Release...
+REM ---- [5/7] Build Release ----
+echo [5/7] Building Release...
 set "CI=false"
 call npx @tauri-apps/cli build --no-bundle
 if %errorlevel% neq 0 (
@@ -89,8 +96,8 @@ if %errorlevel% neq 0 (
 )
 echo.
 
-REM ---- [5/6] Check exe ----
-echo [5/6] Checking exe...
+REM ---- [6/7] Check exe ----
+echo [6/7] Checking exe...
 if not exist "%EXE%" (
     echo   [ERROR] exe not found: %EXE%
     pause
@@ -99,8 +106,8 @@ if not exist "%EXE%" (
 echo   OK: %EXE%
 echo.
 
-REM ---- [6/6] Package ----
-echo [6/6] Packaging...
+REM ---- [7/7] Package ----
+echo [7/7] Packaging...
 pwsh -NoProfile -ExecutionPolicy Bypass -File "%ROOT%\build-portable.ps1" "%ROOT%" "%EXE%"
 if %errorlevel% neq 0 (
     echo   [ERROR] Package failed!

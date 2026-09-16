@@ -1,7 +1,7 @@
 {
   "name": "flashtime-tauri",
   "private": true,
-  "version": "0.1.0",
+  "version": "26.9.16",
   "type": "module",
   "scripts": {
     "dev": "vite",
