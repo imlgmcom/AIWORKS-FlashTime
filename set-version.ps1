@@ -5,7 +5,7 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ver = Get-Date -Format "yy.M.d"
 
-$files = @("src-tauri\tauri.conf.json", "package.json")
+$files = @("src-tauri\tauri.conf.json", "package.json", "src-tauri\Cargo.toml")
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 
 foreach ($f in $files) {

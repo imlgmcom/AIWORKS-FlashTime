@@ -1,6 +1,6 @@
 [package]
 name = "flashtime-tauri"
-version = "0.1.0"
+version = "26.9.16"
 description = "闪时工具箱 FlashTime"
 authors = ["FlashTime"]
 edition = "2021"
