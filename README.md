@@ -1,17 +1,11 @@
----
-AIGC:
-  ContentProducer: '001191110102MAD55U9H0F10002'
-  ContentPropagator: '001191110102MAD55U9H0F10002'
-  Label: '1'
-  ProduceID: '548c76d3-ef49-4b48-95a6-d684f4c892fe'
-  PropagateID: '548c76d3-ef49-4b48-95a6-d684f4c892fe'
-  ReservedCode1: '9ed3089f-c146-4ca2-90b1-619cd35fa0fd'
-  ReservedCode2: '9ed3089f-c146-4ca2-90b1-619cd35fa0fd'
----
-
 # 闪时工具箱 FlashTime
 
 系统托盘常驻的桌面效率工具箱，集成正计时、倒计时、定时任务、提醒计划和待办管理。Windows 绿色便携，数据存 exe 同目录，零依赖、双击即用。
+
+## 此项目完全由teleagent人工智能完成
+
+- 邀请链接注册或者填写邀请码 **8KZLAG** 可以额外获得3000点积分
+- [https://agent.teleai.com.cn/s/3Z7DF9XWJC](https://agent.teleai.com.cn/s/3Z7DF9XWJC)
 
 ## 功能
 
@@ -49,12 +43,12 @@ AIGC:
 
 ## 技术栈
 
-| 层 | 技术 |
-|---|---|
-| 框架 | Tauri 2 |
-| 前端 | Vue 3 + TypeScript + Vite + Pinia |
-| 后端 | Rust |
-| 存储 | 本地 JSON 文件（Tauri Store 插件） |
+| 层   | 技术                                              |
+| ---- | ------------------------------------------------- |
+| 框架 | Tauri 2                                           |
+| 前端 | Vue 3 + TypeScript + Vite + Pinia                 |
+| 后端 | Rust                                              |
+| 存储 | 本地 JSON 文件（Tauri Store 插件）                |
 | 插件 | autostart / notification / store / shell / opener |
 
 ## 项目结构
